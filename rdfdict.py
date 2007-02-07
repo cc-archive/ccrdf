@@ -248,7 +248,7 @@ class rdfStore:
         the store, wrapped in an instance of rdfDict."""
 
         for subject in self.store.subjects():
-            yield rdfDict(subject, store=self.store)
+            yield rdfDict(subject, rdfStore=self.store)
         
     def output(self):
         """
