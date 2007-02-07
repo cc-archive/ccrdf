@@ -86,10 +86,16 @@ class rdfDict:
 	output_str = str(self.getFirst(type_item)) + ": "
 
 	for pair in pairs:
-	   output_str = '%s %s: %s;' % (output_str,
-                                        str(pair[0]),
-                                        ", ".join([str(n) for n in pair[1]]) ) 
+            try:
 
+                output_str = u'%s %s: %s;' % (output_str.decode('utf8'),
+                                            str(pair[0]).decode('utf8'),
+                                            u", ".join(
+                    [str(n) for n in pair[1]]))
+            except UnicodeEncodeError, e:
+                output_str = "%s %s: [unable to decode];" % (output_str,
+                                                             str(pair[0]))
+                
 	return output_str
 
     def about(self):
