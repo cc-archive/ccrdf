@@ -5,7 +5,7 @@ A generic wrapper for RDFlib which provides a dictionary-like interface to
 blocks of RDF with common subjects.  Also provides a utility wrapper,
 rdfStore, for parsing and generating RDF.
 
-(c) 2003-2004, Nathan R. Yergler
+(c) 2003-2007, Nathan R. Yergler
 Licensed under the GNU GPL2
 """
 
@@ -232,7 +232,7 @@ class rdfDict:
 
         return ( (self.subject, key, None) in self.store )
 
-class rdfStore:
+class rdfStore(object):
     """
     Provides RDF parsing and output functions for CC license and work
     definitions.
