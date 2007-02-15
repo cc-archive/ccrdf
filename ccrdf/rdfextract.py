@@ -19,6 +19,8 @@ import urlparse
 import re
 import sets
 
+import pkg_resources
+
 import rdfdict
 
 def null_extractor(text, url):
@@ -115,58 +117,16 @@ def link_extractor(text, url):
     
     return results
 
-def href_extractor(text, url):
-    """Extracts metadata stored in linked files specified by
-    <a rel="license" href="..." >
-    """
-
-    results = []
-    
-    # extract the list of link tags
-    link_regex = re.compile("<a .*?>",
-                           re.IGNORECASE|re.DOTALL|re.MULTILINE)
-    rel_regex = re.compile('rel="license"',
-                           re.IGNORECASE|re.DOTALL|re.MULTILINE)
-    href_regex = re.compile('(href=["\'])(.*?)(["\'])',
-                            re.IGNORECASE)
-    
-    # extract the RDF bits from the incoming text
-    matches = []
-    text = text.strip()
-
-    links = link_regex.findall(text)
-
-    # check if each link has the correct relationship
-    for link in links:
-        isrel = rel_regex.search(link)
-        if isrel:
-            # extract the href
-            href = href_regex.search(link)
-            if href:
-                rdf_href = urlparse.urljoin(url, href.group(2))
-
-                # retrieve the href and check for RDF
-                results = results + \
-                          RdfExtractor().extractRdfText(
-                    retrieveUrl(rdf_href), url=rdf_href)
-    
-    return results
-
-
 # ------------------------------------------------------------------
 
-class RdfExtractor:
+class RdfExtractor(object):
     """A pluggable class for extracting RDF from blocks of text."""
-    
-    def __init__(self, default_extractors = [regex_extractor,
-                                             string_extractor,
-                                             link_extractor,
-                                             href_extractor]):
-        """default_extractors contains the list of extractors to use;
-        this list can be mutated after instantiation through the extractors
-        property. """
-        
-        self.extractors = default_extractors
+
+    @property
+    def extractors(self):
+        """Return an iterator over the entry points for RDF extraction."""
+
+        return pkg_resources.iter_entry_points('ccrdf.extractor')
 
     def extractRdfText(self, textblock, url=None):
         """Pass textblock through each extractor in sequence and return
@@ -178,13 +138,12 @@ class RdfExtractor:
             rdf_blocks = rdf_blocks + func(textblock, url)
 
         result = list(sets.Set([n.strip() for n in rdf_blocks]))
-        # print result
         
         return result
 
     def extractRdf(self, textblock, url=None):
         """Pass textblock through each extractor in sequence and return
-        a list of rdfDict objects."""
+        a list of rdfStore objects."""
 
         rdf_blocks = self.extractRdfText(textblock, url)
 
@@ -194,13 +153,21 @@ class RdfExtractor:
 
             yield store
 
+    def extractUrlToStore(self, url, rdf_store):
+
+        rdf_blocks = self.extractRdfText(retrieveUrl(url), url)
+
+        for block in rdf_blocks:
+            rdf_store.parse(block)
+
+
 # ------------------------------------------------------------------
 # convenience functions
 
 def retrieveUrl(url):
     """Returns the document contained at [url]."""
     
-    headers = {'User-Agent':'ccRdf/Python 2.3'}
+    headers = {'User-Agent':'ccRdf/Python'}
     request = urllib2.Request(url, headers=headers)
     
     resource = urllib2.urlopen(request)

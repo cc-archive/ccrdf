@@ -33,10 +33,18 @@ setup(
     packages = ['ccrdf'],
 
     install_requires = ['setuptools',
-                        'lxml',
+                        'rdflib',
                         ],
     include_package_data = True,
     zip_safe = True,
+
+    entry_points = """
+        [ccrdf.extractor]
+        null = ccrdf.rdfextract:null_extractor
+        string = ccrdf.rdfextract:string_extractor
+        regex = ccrdf.rdfextract:regex_extractor
+        link = ccrdf.rdfextract:link_extractor
+    """,
 
     author = 'Nathan R. Yergler',
     author_email = 'nathan@creativecommons.org',
