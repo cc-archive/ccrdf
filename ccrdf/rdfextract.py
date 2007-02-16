@@ -14,6 +14,11 @@ __version__ = "$Revision$"
 __copyright__ = '(c) 2004, Nathan R. Yergler'
 __license__ = 'licensed under the GNU GPL2'
 
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
+    
 import urllib2
 import urlparse
 import re
@@ -186,7 +191,7 @@ class RdfExtractor(object):
         rdf_blocks = self.extractRdfText(retrieveUrl(url), url)
 
         for block in rdf_blocks:
-            rdf_graph.parse(block)
+            rdf_graph.parse(StringIO(block))
 
         for extractor in self.graph_extractors:
             extractor(retrieveUrl(url), url, rdf_graph)
