@@ -5,7 +5,7 @@ A generic wrapper for RDFlib which provides a dictionary-like interface to
 blocks of RDF with common subjects.  Also provides a utility wrapper,
 rdfStore, for parsing and generating RDF.
 
-(c) 2003-2004, Nathan R. Yergler
+(c) 2003-2007, Nathan R. Yergler
 Licensed under the GNU GPL2
 """
 
@@ -24,7 +24,11 @@ import cStringIO
 import sets
 
 # import RDF handling facilities
-from rdflib.TripleStore import TripleStore
+from rdflib.Graph import Graph
+import rdflib.store.Memory
+from rdflib.URIRef import URIRef
+
+# from rdflib.TripleStore import TripleStore
 from rdflib.BNode import BNode
 from rdflib.Literal import Literal
 from rdflib.URIRef import URIRef
@@ -54,8 +58,7 @@ class rdfDict:
     def __init__(self, subject, rdfStore=None):
         """
         Creates a new rdfDict given the particular subject and an optional
-        TripleStore (rdfStore).  If no TripleStore is provided, creates a
-        new one.
+        Graph (rdfStore).  If no Graph is provided, creates a new one.
         """
 
         # store the subject
@@ -63,7 +66,7 @@ class rdfDict:
 
         # store or create the triple store
         if rdfStore is None:
-            self.store = TripleStore()
+            self.store = Graph(rdflib.store.Memory.Memory())
         else:
             self.store = rdfStore
 
@@ -232,15 +235,15 @@ class rdfDict:
 
         return ( (self.subject, key, None) in self.store )
 
-class rdfStore:
+class rdfStore(object):
     """
     Provides RDF parsing and output functions for CC license and work
     definitions.
     """
     
     def __init__(self):
-        # initialize the TripleStore for managing RDF
-        self.store = TripleStore()
+        # initialize the Graph for managing RDF
+        self.store = Graph(rdflib.store.Memory.Memory()) #TripleStore()
         
     def parse(self, rdf):
         """
