@@ -140,11 +140,11 @@ class RdfExtractor(object):
                 pkg_resources.iter_entry_points('ccrdf.extract_text')]
 
     @property
-    def store_extractors(self):
+    def graph_extractors(self):
         """Return a sequence of extractors which operate by adding assertions
         to an RDF Graph.
 
-        Store extractors are callables which take three parameters:
+        Graph extractors are callables which take three parameters:
 
         * a block of text to operate on
         * the URL the text was retrieved from (for use when rdf:about='')
@@ -181,15 +181,15 @@ class RdfExtractor(object):
 
             yield store
 
-    def extractUrlToStore(self, url, rdf_store):
+    def extractUrlToGraph(self, url, rdf_graph):
 
         rdf_blocks = self.extractRdfText(retrieveUrl(url), url)
 
         for block in rdf_blocks:
-            rdf_store.parse(block)
+            rdf_graph.parse(block)
 
-        for extractor in self.store_extractors:
-            extractor(retrieveUrl(url), url, rdf_store)
+        for extractor in self.graph_extractors:
+            extractor(retrieveUrl(url), url, rdf_graph)
 
 # ------------------------------------------------------------------
 # convenience functions
