@@ -39,7 +39,7 @@ setup(
     zip_safe = True,
 
     entry_points = """
-        [ccrdf.extractor]
+        [ccrdf.extract_text]
         null = ccrdf.rdfextract:null_extractor
         string = ccrdf.rdfextract:string_extractor
         regex = ccrdf.rdfextract:regex_extractor
