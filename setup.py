@@ -29,7 +29,7 @@ def read(*rnames):
 
 setup(
     name = "ccrdf",
-    version = "0.6a3",
+    version = "0.6a4",
     packages = ['ccrdf'],
 
     install_requires = ['setuptools',
@@ -58,6 +58,6 @@ setup(
          '********\n'
          ),
     license = 'MIT',
-    url = 'http://wiki.creativecommons.org/CcRdf_for_Python',
+    url = 'http://wiki.creativecommons.org/CcRdf',
 
     )
