@@ -29,7 +29,7 @@ def read(*rnames):
 
 setup(
     name = "ccrdf",
-    version = "0.6a1",
+    version = "0.6a2",
     packages = ['ccrdf'],
 
     install_requires = ['setuptools',
