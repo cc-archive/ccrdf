@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: ccrdf
-Version: 0.6a1
+Version: 0.6a3
 Summary: XXX.
 Home-page: http://wiki.creativecommons.org/CcRdf_for_Python
 Author: Nathan R. Yergler
@@ -33,6 +33,8 @@ Description: =====
         ****************************
         
         XXX
+        
+        
         Change History
         **************
         
@@ -40,6 +42,8 @@ Description: =====
         =========
         
         * Reorganized source tree to work better with PyPI and setuptools
+        * Implemented entry points for extending extraction capabilities
+        * Added support for extracting directly into a Graph
         
         
         Download

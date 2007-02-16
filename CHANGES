@@ -5,4 +5,6 @@ Change History
 =========
 
 * Reorganized source tree to work better with PyPI and setuptools
+* Implemented entry points for extending extraction capabilities
+* Added support for extracting directly into a Graph
 
