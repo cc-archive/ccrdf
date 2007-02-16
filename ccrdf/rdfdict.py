@@ -243,8 +243,14 @@ class rdfStore(object):
     
     def __init__(self):
         # initialize the Graph for managing RDF
-        self.store = Graph(rdflib.store.Memory.Memory()) #TripleStore()
-        
+        self.graph = Graph(rdflib.store.Memory.Memory()) #TripleStore()
+
+    @property
+    def store(self):
+        """store is a deprecated alias for graph."""
+
+        return self.graph
+    
     def parse(self, rdf):
         """
         Parse the given String, rdf, into it's component triples.
