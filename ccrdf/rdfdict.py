@@ -24,7 +24,11 @@ import cStringIO
 import sets
 
 # import RDF handling facilities
-from rdflib.TripleStore import TripleStore
+from rdflib.Graph import Graph
+import rdflib.store.Memory
+from rdflib.URIRef import URIRef
+
+# from rdflib.TripleStore import TripleStore
 from rdflib.BNode import BNode
 from rdflib.Literal import Literal
 from rdflib.URIRef import URIRef
@@ -54,8 +58,7 @@ class rdfDict:
     def __init__(self, subject, rdfStore=None):
         """
         Creates a new rdfDict given the particular subject and an optional
-        TripleStore (rdfStore).  If no TripleStore is provided, creates a
-        new one.
+        Graph (rdfStore).  If no Graph is provided, creates a new one.
         """
 
         # store the subject
@@ -63,7 +66,7 @@ class rdfDict:
 
         # store or create the triple store
         if rdfStore is None:
-            self.store = TripleStore()
+            self.store = Graph(rdflib.store.Memory.Memory())
         else:
             self.store = rdfStore
 
@@ -239,8 +242,8 @@ class rdfStore(object):
     """
     
     def __init__(self):
-        # initialize the TripleStore for managing RDF
-        self.store = TripleStore()
+        # initialize the Graph for managing RDF
+        self.store = Graph(rdflib.store.Memory.Memory()) #TripleStore()
         
     def parse(self, rdf):
         """
