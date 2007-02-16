@@ -124,10 +124,38 @@ class RdfExtractor(object):
 
     @property
     def extractors(self):
-        """Return an iterator over the entry points for RDF extraction."""
+        """Return a sequence of extractors which operate by returning
+        blocks of plain text.
 
-        return pkg_resources.iter_entry_points('ccrdf.extractor')
+        Plain-text extractors are callables which take two parameters:
 
+        * a block of text to operate on
+        * the URL the text was retrieved from (for use when rdf:about='')
+
+        Plain-text extractors must return a sequence of string objects,
+        where each element in the sequence is a valid chunk of RDF.
+        """
+
+        return [e.load() for e in
+                pkg_resources.iter_entry_points('ccrdf.extract_text')]
+
+    @property
+    def store_extractors(self):
+        """Return a sequence of extractors which operate by adding assertions
+        to an RDF Graph.
+
+        Store extractors are callables which take three parameters:
+
+        * a block of text to operate on
+        * the URL the text was retrieved from (for use when rdf:about='')
+        * the RDF Graph object to add the assertions to.
+
+        Store extractors do not need to return a value.
+        """
+        
+        return [e.load() for e in
+                pkg_resources.iter_entry_points('ccrdf.extract_to_graph')]
+        
     def extractRdfText(self, textblock, url=None):
         """Pass textblock through each extractor in sequence and return
         a list of RDF blocks extracted."""
@@ -160,6 +188,8 @@ class RdfExtractor(object):
         for block in rdf_blocks:
             rdf_store.parse(block)
 
+        for extractor in self.store_extractors:
+            extractor(retrieveUrl(url), url, rdf_store)
 
 # ------------------------------------------------------------------
 # convenience functions
