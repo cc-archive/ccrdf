@@ -14,9 +14,6 @@ __version__ = "$Revision$"
 __copyright__ = '(c) 2003-2004, Nathan R. Yergler'
 __license__ = 'licensed under the GNU GPL2'
 
-# enable generators
-from __future__ import generators
-
 # import some basic support structure
 import sys
 import xml.sax.xmlreader
