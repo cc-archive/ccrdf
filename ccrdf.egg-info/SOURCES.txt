@@ -2,6 +2,7 @@
 .project
 CHANGES
 README
+TODO
 setup.py
 ccrdf/__init__.py
 ccrdf/aaronrdf.py

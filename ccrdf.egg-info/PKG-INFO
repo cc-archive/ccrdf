@@ -1,8 +1,8 @@
 Metadata-Version: 1.0
 Name: ccrdf
-Version: 0.6a3
+Version: 0.6a4
 Summary: XXX.
-Home-page: http://wiki.creativecommons.org/CcRdf_for_Python
+Home-page: http://wiki.creativecommons.org/CcRdf
 Author: Nathan R. Yergler
 Author-email: nathan@creativecommons.org
 License: MIT
