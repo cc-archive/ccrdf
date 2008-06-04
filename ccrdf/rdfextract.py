@@ -86,6 +86,7 @@ def link_extractor(text, url):
     <link rel="meta" type="application/rdf+xml"
     href="/en/wiki/wiki.phtml?title=Main_Page&action=creativecommons">
     """
+    # FIXME: Should use BeautifulSoup or something smarter instead.
 
     results = []
     
